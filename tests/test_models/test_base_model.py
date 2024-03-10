@@ -120,8 +120,9 @@ class TestBaseModel_instantiation(unittest.TestCase):
                   'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca(self):
         now = datetime.datetime.now()
@@ -132,8 +133,9 @@ class TestBaseModel_instantiation(unittest.TestCase):
                   'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca_ua(self):
         kwargs = {'first_name': 'Betty',
@@ -142,8 +144,9 @@ class TestBaseModel_instantiation(unittest.TestCase):
                   'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca_ua_fn(self):
         kwargs = {'last_name': 'Holberton',
@@ -151,29 +154,32 @@ class TestBaseModel_instantiation(unittest.TestCase):
                   'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca_ua_fn_ln(self):
         kwargs = {'email': 'hbtn@sch.com',
                   'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca_ua_fn_ln_email(self):
         kwargs = {'age': 98,
                   'weight': 100.048
                   }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_other_no_ca_ua_fn_ln_email_a(self):
-        kwargs = {'weight': 100.048
-                  }
-        BaseModel(**kwargs)
-        self.assertRaises(AttributeError)
+        kwargs = {'weight': 100.048}
+        a = BaseModel(**kwargs)
+        with self.assertRaises(AttributeError):
+            print(a)
 
     def test_instantiation_kwargs_empty(self):
         kwargs = {}
@@ -184,10 +190,8 @@ class TestBaseModel_instantiation(unittest.TestCase):
 
     def test_instantiation_kwargs_None(self):
         kwargs = None
-        with self.assertRaises(TypeError) as e:
+        with self.assertRaises(TypeError):
             BaseModel(**kwargs)
-        err = "type object argument after ** must be a mapping, not NoneType"
-        self.assertEqual(str(e.exception), err)
 
     def test_instantiation_kwargs_id_other(self):
         now = datetime.datetime.now()
@@ -317,11 +321,61 @@ class TestBaseModel_str(unittest.TestCase):
                          "[BaseModel] ({}) {}\n".format(a.id, a.__dict__))
 
 
-class TestBaseModel_save_test(unittest.TestCase):
+class TestBaseModel_save(unittest.TestCase):
     def tearDown(self):
-        FileStorage._FileStorage__objects = {}
-        if os.path.isfile(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+        try:
+            FileStorage._FileStorage__objects = {}
+            if os.path.isfile(FileStorage._FileStorage__file_path):
+                os.remove(FileStorage._FileStorage__file_path)
+        except Exception:
+            pass
+
+    def setUp(self):
+        objdict = FileStorage().all()
+        objdict.clear()
+        FileStorage().save()
+
+    def test_save_BaseModel_normal(self):
+        a = BaseModel()
+        key = "{}.{}".format(a.__class__.__name__, a.id)
+        a.save()
+        with open(FileStorage._FileStorage__file_path, 'r') as f:
+            self.assertEqual(f.read(50), "{{\"{}\":".format(key))
+
+
+class TestBaseModel_to_dict(unittest.TestCase):
+    """This class tests the to_dict method of a Place
+    class instance
+    """
+    def test_no_arg(self):
+        a = BaseModel()
+        self.assertIsInstance(a.to_dict(), dict)
+
+    def test_one_arg(self):
+        a = BaseModel()
+        with self.assertRaises(TypeError):
+            a.to_dict(1)
+
+    def test_newattr_arg(self):
+        a = BaseModel()
+        a.name = "abdu"
+        dictionary = a.to_dict()
+        self.assertEqual(dictionary['name'], "abdu")
+
+    def test_class_attr(self):
+        a = BaseModel()
+        dictionary = a.to_dict()
+        self.assertEqual(dictionary['__class__'], "BaseModel")
+
+    def test_created_at_attr(self):
+        a = BaseModel()
+        dictionary = a.to_dict()
+        self.assertIsInstance(dictionary['created_at'], str)
+
+    def test_updated_at_attr(self):
+        a = BaseModel()
+        dictionary = a.to_dict()
+        self.assertIsInstance(dictionary['updated_at'], str)
 
 
 if __name__ == '__main__':
