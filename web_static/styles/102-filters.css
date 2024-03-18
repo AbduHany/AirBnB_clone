@@ -1,7 +1,8 @@
 .container .filters {
+    margin: 0 auto;
     background-color: white;
     height: 70px;
-    width: 100%;
+    width: 70%;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     position: relative;
@@ -42,6 +43,7 @@
 }
 .locations h4,
 .amenities h4 {
+    height: 16px;
     font-weight: 400;
     font-size: 14px;
     margin-top: 0;
@@ -74,4 +76,30 @@ div.amenities:hover .popover {
     list-style-type: none;
     margin-bottom: 20px;
     padding-left: 25px;
+}
+
+@media screen and (max-width: 800px) {
+    .locations h4,
+    .amenities h4 {
+        font-size: 9px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+    }
+    .locations h3,
+    .amenities h3 {
+        font-size: 12px;
+        margin-top: 19px;
+        margin-left: 10px;
+    }
+    div.locations .popover,
+    div.amenities .popover {
+        padding: 10px;
+    }
+    ul.popover li h2 {
+        font-size: 9px;
+    }
+    ul.popover li ul {
+        padding-left: 5px;
+        font-size: 9px;
+    }
 }

@@ -1,10 +1,12 @@
 .places h1 {
     font-size: 30px;
-    text-align: left;
-    margin-bottom: 0px
+    margin-bottom: 0px;
+    max-width: 100%;
+    text-align: center;
 }
 
-.places div{
+.places>div{
+    max-width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -46,22 +48,27 @@ article div.information {
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     position: relative;
+    display: flex;
+    justify-content: space-around;
 }
 
 div.information div.max_guest {
     width: 100px;
+    height: 60px;
     background: url("../images/icon_group.png") no-repeat;
     background-position: center;
     margin-bottom: 20px;
 }
 div.information div.number_rooms {
     width: 100px;
+    height: 60px;
     background: url("../images/icon_bed.png") no-repeat;
     background-position: center;
     margin-bottom: 20px;
 }
 div.information div.number_bathrooms {
     width: 100px;
+    height: 60px;
     background: url("../images/icon_bath.png") no-repeat;
     background-position: center;
     margin-bottom: 20px;
@@ -69,8 +76,9 @@ div.information div.number_bathrooms {
 
 div.information p {
     margin: 0;
-    position: absolute;
     bottom: 10px;
+    text-align: center;
+    margin-top: 60px;
 }
 
 article div.user {
@@ -144,4 +152,12 @@ div.user p {
 .places div.amenities ul li[attr="pets"] {
     background: url("../images/icon_pets.png") no-repeat;
     background-size: contain;
+}
+
+@media screen and (max-width: 400px) {
+    article div.price_by_night {
+        min-width: 60px;
+        height: 60px;
+        line-height: 60px;
+    }
 }
