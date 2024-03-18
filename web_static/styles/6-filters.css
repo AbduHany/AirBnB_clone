@@ -59,6 +59,8 @@ div.amenities .popover {
     list-style-type: none;
     box-sizing: border-box;
     margin: 0;
+    position: relative;
+    z-index: 1;
 }
 
 div.locations:hover .popover,
